@@ -1,0 +1,108 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Property (Domain)
+model Property {
+    id String @id @default(uuid()) @unique
+    hostname String @unique
+    
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    
+    // related pages
+    nodes Node[]
+    
+    // visual assets
+    favicon Media? @relation(name: "PropertyFavicon", fields: [faviconId], references: [id])
+    faviconId String?
+    ogImage Media? @relation(name: "PropertyOgImage", fields: [ogImageId], references: [id])
+    ogImageId String?
+
+    // physical address
+    address1 String?
+    address2 String?
+    city String?
+    state String?
+    zip String?
+    country String?
+
+    // social media links
+    facebook String?
+    twitter String?
+    instagram String?
+    linkedin String?
+    youtube String?
+    tiktok String?
+    discord String?
+    github String?
+
+    @@map("properties")
+}
+
+// Node (Page, including home page of property)
+model Node {
+    id String @id @default(uuid()) @unique
+    url String @unique
+    title String?
+    description String?
+    
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // AI generated content
+    summary String?
+    keywords String[] // array of keywords/tags
+    industry String? // industry classification
+    audience String? // target audience description
+
+    // technlogy stack
+    technologies String[] // array of technologies used on the page
+
+    // backlinks and outbound links
+    backlinks Connector[] @relation("Backlinks")
+    outboundLinks Connector[] @relation("OutboundLinks")
+
+    // relations
+    property Property @relation(fields: [propertyId], references: [id])
+    propertyId String
+
+    @@map("nodes")
+}
+
+// Connector (Link)
+model Connector {
+    id String @id @default(uuid()) @unique
+    url String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // relations
+    from Node @relation("OutboundLinks", fields: [fromId], references: [id])
+    fromId String
+    to Node @relation("Backlinks", fields: [toId], references: [id])
+    toId String
+
+    @@map("connectors")
+}
+
+// Media
+model Media {
+    id String @id @default(uuid()) @unique
+    url String
+    
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // relations
+    propertiesFavicon Property[] @relation("PropertyFavicon")
+    propertiesOgImage Property[] @relation("PropertyOgImage")
+
+    @@map("media")
+}
