@@ -96,7 +96,7 @@ model Connector {
 model Media {
     id String @id @default(uuid()) @unique
     url String
-    
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -105,4 +105,21 @@ model Media {
     propertiesOgImage Property[] @relation("PropertyOgImage")
 
     @@map("media")
+}
+
+// CrawlQueue - tracks pages to crawl on seed domains
+model CrawlQueue {
+    id String @id @default(uuid()) @unique
+    url String @unique
+    depth Int @default(0) // how many levels deep from seed domain
+    status String @default("pending") // pending, processing, completed, failed
+    isSeedDomain Boolean @default(false) // true if this is a seed domain
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    processedAt DateTime?
+
+    @@index([status])
+    @@index([isSeedDomain])
+    @@map("crawl_queue")
 }

@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
+    "start:source-crawler": "ts-node crawler/source-crawler.ts",
     "start:crawler": "ts-node crawler/index.ts"
   },
   "dependencies": {
@@ -14,10 +15,13 @@
     "got": "^14.4.9",
     "luxon": "^3.7.2",
     "next": "15.5.4",
+    "openai": "^6.0.0",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
+    "@types/luxon": "^3.7.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
