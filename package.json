@@ -7,13 +7,15 @@
     "build": "next build --turbopack",
     "start": "next start",
     "start:source-crawler": "tsx crawler/source-crawler.ts",
-    "start:crawler": "tsx crawler/index.ts"
+    "start:crawler": "tsx crawler/index.ts",
+    "sync:meilisearch": "tsx crawler/meilisearch-sync.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",
     "cheerio": "^1.1.2",
     "got": "^14.4.9",
     "luxon": "^3.7.2",
+    "meilisearch": "^0.53.0",
     "next": "15.5.4",
     "openai": "^6.0.0",
     "react": "19.1.0",
