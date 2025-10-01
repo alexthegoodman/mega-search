@@ -6,8 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "start:source-crawler": "ts-node crawler/source-crawler.ts",
-    "start:crawler": "ts-node crawler/index.ts"
+    "start:source-crawler": "tsx crawler/source-crawler.ts",
+    "start:crawler": "tsx crawler/index.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.16.3",
@@ -18,7 +18,7 @@
     "openai": "^6.0.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "ts-node": "^10.9.2"
+    "tsx": "^4.20.6"
   },
   "devDependencies": {
     "@types/luxon": "^3.7.1",

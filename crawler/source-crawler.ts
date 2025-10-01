@@ -11,6 +11,7 @@ const SEED_DOMAINS = [
 
 const MAX_DEPTH = 7; // how deep to crawl within seed domains
 const CRAWL_DELAY_MS = 5000; // 5 second delay between each crawl
+const URL_BLACKLIST = ["wcpages"]; // skip URLs containing these keywords
 
 async function initializeSeedDomains() {
   // Add seed domains to crawl queue if not already present
@@ -44,6 +45,10 @@ function isSameDomain(url: string, seedUrl: string): boolean {
   return urlHostname === seedHostname;
 }
 
+function isBlacklisted(url: string): boolean {
+  return URL_BLACKLIST.some((keyword) => url.toLowerCase().includes(keyword.toLowerCase()));
+}
+
 async function extractLinks(html: string, baseUrl: string): Promise<string[]> {
   const $ = cheerio.load(html);
   const links: Set<string> = new Set();
@@ -75,6 +80,16 @@ async function processCrawlQueueItem(item: {
   depth: number;
   isSeedDomain: boolean;
 }) {
+  // Skip blacklisted URLs
+  if (isBlacklisted(item.url)) {
+    console.log(`⊘ Skipping blacklisted: ${item.url}`);
+    await prisma.crawlQueue.update({
+      where: { id: item.id },
+      data: { status: "completed", processedAt: new Date() },
+    });
+    return;
+  }
+
   console.log(`Processing: ${item.url} (depth: ${item.depth})`);
 
   try {
@@ -98,6 +113,11 @@ async function processCrawlQueueItem(item: {
 
     // Process links
     for (const link of links) {
+      // Skip blacklisted links
+      if (isBlacklisted(link)) {
+        continue;
+      }
+
       const linkHostname = extractHostname(link);
       if (!linkHostname) continue;
 
