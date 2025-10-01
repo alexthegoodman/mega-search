@@ -113,6 +113,7 @@ async function main() {
   let domainsToProcess: string[] = [];
   const existingProperties = await prisma.property.findMany({
     select: { hostname: true },
+    where: { nodes: { none: {} } }, // only properties with no nodes
   });
 
   if (existingProperties.length === 0) {
@@ -219,6 +220,8 @@ async function main() {
     } catch (error) {
       console.error(`Error processing ${domain}:`, error);
       // continue to next domain after error
+      // remove from db so not reprocessed next run
+      await prisma.property.deleteMany({ where: { hostname: domain } });
     }
 
     // Wait 5 seconds before next crawl
