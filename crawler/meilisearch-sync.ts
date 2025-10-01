@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { MeiliSearch } from "meilisearch";
 import OpenAI from "openai";
+import { NodeDocument, PropertyDocument } from "./types";
 
 const prisma = new PrismaClient();
 const client = new MeiliSearch({
@@ -15,68 +16,6 @@ const openai = new OpenAI({
 const PROPERTIES_INDEX = "properties";
 const NODES_INDEX = "nodes";
 const BATCH_SIZE = 100;
-
-interface PropertyDocument {
-  id: string;
-  hostname: string;
-  address1: string | null;
-  address2: string | null;
-  city: string | null;
-  state: string | null;
-  zip: string | null;
-  country: string | null;
-  facebook: string | null;
-  twitter: string | null;
-  instagram: string | null;
-  linkedin: string | null;
-  youtube: string | null;
-  tiktok: string | null;
-  discord: string | null;
-  github: string | null;
-  faviconUrl: string | null;
-  ogImageUrl: string | null;
-  createdAt: number;
-  updatedAt: number;
-  _vectors?: { default: number[] };
-}
-
-interface NodeDocument {
-  id: string;
-  url: string;
-  title: string | null;
-  description: string | null;
-  summary: string | null;
-  keywords: string[];
-  industry: string | null;
-  audience: string | null;
-  technologies: string[];
-  propertyId: string;
-  propertyHostname: string;
-  createdAt: number;
-  updatedAt: number;
-  _vectors?: { default: number[] };
-  // Denormalized property data
-  property: {
-    id: string;
-    hostname: string;
-    address1: string | null;
-    address2: string | null;
-    city: string | null;
-    state: string | null;
-    zip: string | null;
-    country: string | null;
-    facebook: string | null;
-    twitter: string | null;
-    instagram: string | null;
-    linkedin: string | null;
-    youtube: string | null;
-    tiktok: string | null;
-    discord: string | null;
-    github: string | null;
-    faviconUrl: string | null;
-    ogImageUrl: string | null;
-  };
-}
 
 async function generateEmbedding(text: string): Promise<number[]> {
   const response = await openai.embeddings.create({
