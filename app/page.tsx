@@ -10,6 +10,7 @@ import {
   NodeDocument,
 } from "@/crawler/types";
 import { ResizableTable } from "@/components/ResizableTable";
+import KeywordWordCloud from "@/components/WordCloud";
 
 const Logo = styled.h1`
   font-size: 24px;
@@ -107,6 +108,7 @@ export default function Home() {
               Find all kinds of businesses. No email harvesting. Extremely
               efficient.
             </p>
+            <KeywordWordCloud />
           </>
         )}
       </Body>
