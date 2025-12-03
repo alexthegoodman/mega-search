@@ -13,6 +13,7 @@
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
     "@prisma/client": "^6.16.3",
+    "@types/got": "^9.6.12",
     "cheerio": "^1.1.2",
     "got": "^14.4.9",
     "luxon": "^3.7.2",

@@ -5,7 +5,8 @@ import * as cheerio from "cheerio";
 const prisma = new PrismaClient();
 
 const SEED_DOMAINS = [
-  "https://web.grandrapids.org/search",
+  "https://builtin.com/jobs/na/usa/mi/grand-rapids",
+  // "https://web.grandrapids.org/search",
   "https://www.crainsgrandrapids.com",
 ];
 
@@ -194,7 +195,7 @@ async function processQueue() {
   while (true) {
     // Get next pending item (one at a time to ensure 5 second delay between each)
     const pendingItem = await prisma.crawlQueue.findFirst({
-      where: { status: "pending" },
+      where: { status: "pending", url: { contains: "https://builtin.com/company/" } },
       orderBy: [{ depth: "asc" }, { createdAt: "asc" }],
     });
 
@@ -224,7 +225,7 @@ async function main() {
   });
 
   console.log("\n=== Crawl Summary ===");
-  summary.forEach((s) => {
+  summary.forEach((s: any) => {
     console.log(`${s.status}: ${s._count}`);
   });
 

@@ -147,7 +147,7 @@ async function syncProperties() {
   console.log(`Found ${properties.length} properties in database`);
 
   // Filter to only new properties
-  const newProperties = properties.filter((p) => !existingIds.has(p.id));
+  const newProperties = properties.filter((p: any) => !existingIds.has(p.id));
 
   console.log(`${newProperties.length} new properties to sync`);
 
@@ -161,7 +161,7 @@ async function syncProperties() {
     const batch = newProperties.slice(i, i + BATCH_SIZE);
 
     const documents: PropertyDocument[] = await Promise.all(
-      batch.map(async (property) => {
+      batch.map(async (property: any) => {
         // Generate embedding from searchable text
         const textForEmbedding = [
           property.hostname,
@@ -234,7 +234,7 @@ async function syncNodes() {
   console.log(`Found ${nodes.length} nodes in database`);
 
   // Filter to only new nodes
-  const newNodes = nodes.filter((n) => !existingIds.has(n.id));
+  const newNodes = nodes.filter((n: any) => !existingIds.has(n.id));
 
   console.log(`${newNodes.length} new nodes to sync`);
 
@@ -248,7 +248,7 @@ async function syncNodes() {
     const batch = newNodes.slice(i, i + BATCH_SIZE);
 
     const documents: NodeDocument[] = await Promise.all(
-      batch.map(async (node) => {
+      batch.map(async (node: any) => {
         // Generate embedding from searchable text
         const textForEmbedding = [
           node.title,

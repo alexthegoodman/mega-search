@@ -119,7 +119,7 @@ async function main() {
   if (existingProperties.length === 0) {
     domainsToProcess = SEED_DOMAINS.filter((d) => d !== "");
   } else {
-    domainsToProcess = existingProperties.map((p) => p.hostname);
+    domainsToProcess = existingProperties.map((p: any) => p.hostname);
   }
 
   for (const domain of domainsToProcess) {
